@@ -1,0 +1,19 @@
+{
+  "name": "grpc-node",
+  "version": "0.0.1",
+  "description": "Testing gRPC with node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gRPC",
+    "Node.JS"
+  ],
+  "author": "Arham Abiyan",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.3",
+    "grpc": "^1.24.2"
+  }
+}
