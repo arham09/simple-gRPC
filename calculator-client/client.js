@@ -25,32 +25,52 @@ const calculatorProto = grpc.loadPackageDefinition(packageDefinition).calculator
 
 const client = new calculatorProto.Calculator('localhost:50051', grpc.credentials.createInsecure())
 
-app.get('/add', (req, res) => {
-  client.Add({number1: 10.1, number2: 9}, (error, response) => {
+app.post('/add', (req, res) => {
+  const data = {
+    number1: req.body.number1,
+    number2: req.body.number2
+  }
+
+  client.Add(data, (error, response) => {
     if (error) return res.json({ error: error })
   
     res.json({ result: response.result })
   })
 })
 
-app.get('/multiply', (req, res) => {
-  client.Multiply({number1: 10.1, number2: 9}, (error, response) => {
+app.post('/multiply', (req, res) => {
+  const data = {
+    number1: req.body.number1,
+    number2: req.body.number2
+  }
+
+  client.Multiply(data, (error, response) => {
     if (error) return res.json({ error: error })
   
     res.json({ result: response.result })
   })
 })
 
-app.get('/substraction', (req, res) => {
-  client.Substraction({number1: 10.1, number2: 9}, (error, response) => {
+app.post('/substraction', (req, res) => {
+  const data = {
+    number1: req.body.number1,
+    number2: req.body.number2
+  }
+
+  client.Substraction(data, (error, response) => {
     if (error) return res.json({ error: error })
   
     res.json({ result: response.result })
   })
 })
 
-app.get('/division', (req, res) => {
-  client.Division({number1: 10.1, number2: 9}, (error, response) => {
+app.post('/division', (req, res) => {
+  const data = {
+    number1: req.body.number1,
+    number2: req.body.number2
+  }
+
+  client.Division(data, (error, response) => {
     if (error) return res.json({ error: error })
   
     res.json({ result: response.result })
