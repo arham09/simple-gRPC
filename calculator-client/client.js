@@ -1,7 +1,16 @@
+const express = require('express')
+const app = express()
+const bodyParser = require('body-parser')
 const path = require('path')
 const PROTO_PATH = path.join(__dirname, 'calculator.proto')
-var grpc = require('grpc')
-var protoLoader = require('@grpc/proto-loader')
+const grpc = require('grpc')
+const protoLoader = require('@grpc/proto-loader')
+
+/** Receive parse application/x-www-form-urlencoded */
+app.use(bodyParser.urlencoded({ extended: false }))
+
+/** Receive parse application/json */
+app.use(bodyParser.json())
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
@@ -16,31 +25,38 @@ const calculatorProto = grpc.loadPackageDefinition(packageDefinition).calculator
 
 const client = new calculatorProto.Calculator('localhost:50051', grpc.credentials.createInsecure())
 
-const params = {
-  number1: 2,
-  number2: 3
-}
-client.Add(params, (error, response) => {
-  if (error) console.log(error)
-
-  console.log('The Result of Addition Is: ' + response.result) // 'The Result Is: 5'
+app.get('/add', (req, res) => {
+  client.Add({number1: 10.1, number2: 9}, (error, response) => {
+    if (error) return res.json({ error: error })
+  
+    res.json({ result: response.result })
+  })
 })
 
-client.Multiply({number1: 10.1, number2: 9}, (error, response) => {
-  if (error) console.log(error)
-
-  console.log(`The Result of multiply is : ${response.result}`)
+app.get('/multiply', (req, res) => {
+  client.Multiply({number1: 10.1, number2: 9}, (error, response) => {
+    if (error) return res.json({ error: error })
+  
+    res.json({ result: response.result })
+  })
 })
 
-client.Substraction({number1: 100.1, number2: 9.1}, (error, response) => {
-  if (error) console.log(error)
-
-  console.log(`The Result of substraction is : ${response.result}`)
+app.get('/substraction', (req, res) => {
+  client.Substraction({number1: 10.1, number2: 9}, (error, response) => {
+    if (error) return res.json({ error: error })
+  
+    res.json({ result: response.result })
+  })
 })
 
+app.get('/division', (req, res) => {
+  client.Division({number1: 10.1, number2: 9}, (error, response) => {
+    if (error) return res.json({ error: error })
+  
+    res.json({ result: response.result })
+  })
+})
 
-client.Division({number1: 110.1, number2: 9.1}, (error, response) => {
-  if (error) console.log(error)
-
-  console.log(`The Result of division is : ${response.result}`)
+app.listen(2002, () => {
+  console.log('Running in port 2002')
 })
